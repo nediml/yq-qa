@@ -7,7 +7,7 @@ const s = Math.floor(start);
 ---
 <div class="yt" data-yt={id} data-start={s}>
   <button type="button" aria-label={`Play “${title}” from ${mmss(s)}`}>
-    <img src={`https://i.ytimg.com/vi/${id}/hqdefault.jpg`} alt="" loading="lazy" width="480" height="360" />
+    <img src={`https://i.ytimg.com/vi/${id}/hqdefault.jpg`} alt="" loading="eager" fetchpriority="high" width="480" height="360" />
     <span class="play" aria-hidden="true"></span>
     <span class="badge">Starts at {mmss(s)}</span>
   </button>

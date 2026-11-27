@@ -48,6 +48,12 @@ const savePayload = JSON.stringify({ slug: q.slug, question: q.question, categor
       </span>
     </div>
 
+    <div data-pagefind-ignore>
+      <YouTube id={q.videoId} start={q.start} title={q.question} />
+    </div>
+
+    <h2 class="section-label" data-pagefind-ignore>Transcript</h2>
+
     {q.asked && <p class="asked"><b data-pagefind-ignore>The question as asked:</b> {q.asked}</p>}
 
     <div class="answer" set:html={q.html} />
@@ -58,8 +64,6 @@ const savePayload = JSON.stringify({ slug: q.slug, question: q.question, categor
     </p>
 
     <div data-pagefind-ignore>
-      <YouTube id={q.videoId} start={q.start} title={q.question} />
-
       <div class="tags">
         {q.tags.map((t) => <a class="chip plain" href={url(`/tag/${slugify(t)}/`)}>#{t}</a>)}
       </div>
