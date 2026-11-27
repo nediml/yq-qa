@@ -102,6 +102,7 @@
     - {slug: investing, name: Investing & Crypto}
     - {slug: work, name: Work & Earnings}
     - {slug: insurance, name: Insurance}
+    - {slug: gambling, name: Gambling, Lotteries & Prizes}
 
 - slug: health
   name: Health & Medicine
