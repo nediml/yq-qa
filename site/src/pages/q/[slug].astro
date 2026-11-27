@@ -1,0 +1,127 @@
+---
+import Base from '../../layouts/Base.astro';
+import YouTube from '../../components/YouTube.astro';
+import { questions, category, sub, inVideo, related, slugify, mmss, formatDate, SCHOLAR, type Question } from '../../lib/data';
+
+export function getStaticPaths() {
+  return questions.map((q) => ({ params: { slug: q.slug }, props: { q } }));
+}
+const { q } = Astro.props as { q: Question };
+const c = category(q.category);
+const s = sub(q.category, q.subcategory);
+const siblings = inVideo(q.videoId);
+const pos = siblings.findIndex((x) => x.id === q.id);
+const prev = siblings[pos - 1];
+const next = siblings[pos + 1];
+const rel = related(q);
+const savePayload = JSON.stringify({ slug: q.slug, question: q.question, category: c.name });
+---
+<Base title={q.question} description={q.excerpt}>
+  <article class="narrow" data-pagefind-body>
+    <nav class="crumbs" aria-label="Breadcrumb" data-pagefind-ignore>
+      <a href="/">Home</a><span aria-hidden="true">›</span>
+      <a href={`/category/${c.slug}/`}>{c.name}</a><span aria-hidden="true">›</span>
+      <a href={`/category/${c.slug}/${s.slug}/`}>{s.name}</a>
+    </nav>
+
+    <div class="q-head" data-pagefind-ignore>
+      <a class="chip" href={`/category/${c.slug}/${s.slug}/`}>{s.name}</a>
+      <a class="chip plain" href={`/video/${q.videoId}/`} title={q.video.title}>
+        {q.video.playlist?.title ?? q.video.channel} · {formatDate(q.video.uploadDate)}
+      </a>
+    </div>
+
+    <h1 class="q-title" data-pagefind-meta="title">{q.question}</h1>
+    <span hidden data-pagefind-ignore><span data-pagefind-filter="topic">{c.name}</span></span>
+
+    <div class="byline" data-pagefind-ignore>
+      <span>Answered by <a href="/about/">{SCHOLAR}</a></span>
+      <span class="actions">
+        <button class="btn" type="button" id="share">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v7a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-7"/><path d="m16 6-4-4-4 4"/><path d="M12 2v13"/></svg>
+          <span>Share</span>
+        </button>
+        <button class="btn" type="button" id="save" aria-pressed="false" data-q={savePayload}>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+          <span>Save</span>
+        </button>
+      </span>
+    </div>
+
+    {q.asked && <p class="asked"><b data-pagefind-ignore>The question as asked:</b> {q.asked}</p>}
+
+    <div class="answer" set:html={q.html} />
+
+    <p class="note" data-pagefind-ignore>
+      This is an edited transcript of the video, lightly cleaned up for reading. The video is the source; if the text and
+      the video differ, the video is correct.
+    </p>
+
+    <div data-pagefind-ignore>
+      <YouTube id={q.videoId} start={q.start} title={q.question} />
+
+      <div class="tags">
+        {q.tags.map((t) => <a class="chip plain" href={`/tag/${slugify(t)}/`}>#{t}</a>)}
+      </div>
+
+      {(prev || next) && (
+        <nav class="prevnext" aria-label="More from this video">
+          {prev && <a class="card" href={`/q/${prev.slug}/`} rel="prev"><small>‹ Previous in this session · {mmss(prev.start)}</small>{prev.question}</a>}
+          {next && <a class="card next" href={`/q/${next.slug}/`} rel="next"><small>Next in this session · {mmss(next.start)} ›</small>{next.question}</a>}
+        </nav>
+      )}
+
+      {rel.length > 0 && (
+        <section>
+          <h2>Related questions</h2>
+          <ul class="q-list">
+            {rel.map((r) => (
+              <li class="q-item card">
+                <div class="meta">
+                  <span class="chip">{sub(r.category, r.subcategory).name}</span>
+                  <span class="chip plain">▶ {mmss(r.start)}</span>
+                </div>
+                <h3><a href={`/q/${r.slug}/`}>{r.question}</a></h3>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
+    </div>
+  </article>
+
+  <script is:inline>
+    (() => {
+      const KEY = 'yqqa.saved';
+      const read = () => { try { return JSON.parse(localStorage.getItem(KEY) || '[]'); } catch { return []; } };
+      const write = (v) => { try { localStorage.setItem(KEY, JSON.stringify(v)); } catch {} };
+      const btn = document.getElementById('save');
+      const item = JSON.parse(btn.dataset.q);
+      const label = btn.querySelector('span');
+      const sync = () => {
+        const on = read().some((x) => x.slug === item.slug);
+        btn.setAttribute('aria-pressed', String(on));
+        label.textContent = on ? 'Saved' : 'Save';
+      };
+      btn.addEventListener('click', () => {
+        const list = read();
+        const i = list.findIndex((x) => x.slug === item.slug);
+        if (i >= 0) list.splice(i, 1); else list.unshift({ ...item, savedAt: Date.now() });
+        write(list);
+        sync();
+      });
+      sync();
+
+      const share = document.getElementById('share');
+      share.addEventListener('click', async () => {
+        const data = { title: document.title, url: location.href };
+        if (navigator.share) { try { await navigator.share(data); } catch {} return; }
+        try {
+          await navigator.clipboard.writeText(location.href);
+          share.querySelector('span').textContent = 'Link copied';
+          setTimeout(() => (share.querySelector('span').textContent = 'Share'), 1800);
+        } catch {}
+      });
+    })();
+  </script>
+</Base>

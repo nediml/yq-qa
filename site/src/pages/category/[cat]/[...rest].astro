@@ -1,0 +1,54 @@
+---
+// One route for /category/<cat>/, /category/<cat>/page/N/,
+// /category/<cat>/<sub>/ and /category/<cat>/<sub>/page/N/.
+import Base from '../../../layouts/Base.astro';
+import QuestionList from '../../../components/QuestionList.astro';
+import Pager from '../../../components/Pager.astro';
+import { categories, inCategory, pages, type Category, type Sub, type Question } from '../../../lib/data';
+
+export function getStaticPaths() {
+  const out: { params: { cat: string; rest: string | undefined }; props: object }[] = [];
+  for (const c of categories) {
+    const listings: [Sub | null, Question[]][] = [[null, inCategory(c.slug)], ...c.subs.map((s) => [s, inCategory(c.slug, s.slug)] as [Sub, Question[]])];
+    for (const [s, qs] of listings) {
+      const ps = pages(qs);
+      ps.forEach((items, i) => {
+        const parts = [s?.slug, i ? `page/${i + 1}` : undefined].filter(Boolean);
+        out.push({
+          params: { cat: c.slug, rest: parts.length ? parts.join('/') : undefined },
+          props: { c, s, items, current: i + 1, total: ps.length, count: qs.length },
+        });
+      });
+    }
+  }
+  return out;
+}
+
+interface Props { c: Category; s: Sub | null; items: Question[]; current: number; total: number; count: number }
+const { c, s, items, current, total, count } = Astro.props;
+const base = `/category/${c.slug}/${s ? s.slug + '/' : ''}`;
+const title = s ? `${s.name} — ${c.name}` : c.name;
+---
+<Base title={current > 1 ? `${title} — page ${current}` : title} section="topics">
+  <nav class="crumbs" aria-label="Breadcrumb">
+    <a href="/">Home</a><span aria-hidden="true">›</span>
+    <a href="/category/">Topics</a>
+    {s && <><span aria-hidden="true">›</span><a href={`/category/${c.slug}/`}>{c.name}</a></>}
+  </nav>
+  <h1>{s ? s.name : c.name}</h1>
+  <p class="lede">{count} {count === 1 ? 'question' : 'questions'}{!s && ` · ${c.description}`}</p>
+
+  <div class="sub-list">
+    <a class="chip plain" href={`/category/${c.slug}/`} aria-current={!s ? 'page' : undefined}>All · {inCategory(c.slug).length}</a>
+    {c.subs.map((x) => {
+      const n = inCategory(c.slug, x.slug).length;
+      return n > 0 || x.slug === s?.slug ? (
+        <a class="chip plain" href={`/category/${c.slug}/${x.slug}/`} aria-current={x.slug === s?.slug ? 'page' : undefined}>{x.name} · {n}</a>
+      ) : null;
+    })}
+  </div>
+
+  <h2 class="muted" style="font-size:0.95rem;font-weight:500;margin-top:24px">Newest first</h2>
+  <QuestionList items={items} showSub={!s} />
+  <Pager base={base} current={current} total={total} />
+</Base>

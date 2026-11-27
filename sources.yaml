@@ -1,0 +1,28 @@
+# Where Q&A videos come from. ingest.py reads this.
+channels:
+  YasirQadhi: Yasir Qadhi
+  EPICMasjid: EPIC Masjid
+  MemphisIslamicCenter: Memphis Islamic Center
+
+playlists:
+  - id: PLYZxc42QNctU5eNYDR02fdqWl900PQCH3
+    title: Ask Shaykh YQ
+    channel: YasirQadhi
+  - id: PLYZxc42QNctUqcLZyIx-QA3pdAOoU0m9T
+    title: Faith IQ
+    channel: YasirQadhi
+  - id: PL6525094FC0C68B78
+    title: Q&A with Shaykh Dr Yasir Qadhi (2011)
+    channel: YasirQadhi
+  - id: PLYO6Oz7uwCSgHtn9Ype-_fgpiNnDIhLDs
+    title: EPIC Q&A Night
+    channel: EPICMasjid
+  - id: PLYO6Oz7uwCSjQ_4QuBJHV87l_hKtR7TnC
+    title: Udhiya Wisdom and Q&A
+    channel: EPICMasjid
+
+# Extra videos outside the playlists, matched by title on each channel's
+# videos + streams tabs (only used with `ingest.py --all`).
+title_match: '(?i)\bq ?(&|and) ?a\b|questions? (and|&) answers?'
+# Videos on EPIC / MIC must name him in the title.
+speaker_match: '(?i)qadhi|\byq\b'

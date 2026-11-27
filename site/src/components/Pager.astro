@@ -1,0 +1,24 @@
+---
+import { pageUrl } from '../lib/data';
+
+interface Props { base: string; current: number; total: number }
+const { base, current, total } = Astro.props;
+
+// 1 … (current-2 .. current+2) … total
+const nums: (number | '…')[] = [];
+for (let n = 1; n <= total; n++) {
+  if (n === 1 || n === total || Math.abs(n - current) <= 2) nums.push(n);
+  else if (nums[nums.length - 1] !== '…') nums.push('…');
+}
+---
+{total > 1 && (
+  <nav class="pager" aria-label="Pagination">
+    {current > 1 && <a href={pageUrl(base, current - 1)} rel="prev">‹ Prev</a>}
+    {nums.map((n) =>
+      n === '…' ? <span aria-hidden="true">…</span>
+      : n === current ? <span aria-current="page">{n}</span>
+      : <a href={pageUrl(base, n)}>{n}</a>
+    )}
+    {current < total && <a href={pageUrl(base, current + 1)} rel="next">Next ›</a>}
+  </nav>
+)}

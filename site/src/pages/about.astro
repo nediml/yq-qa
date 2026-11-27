@@ -1,0 +1,47 @@
+---
+import Base from '../layouts/Base.astro';
+import { series, SCHOLAR } from '../lib/data';
+---
+<Base title="About" section="about">
+  <div class="prose">
+    <h1>About this archive</h1>
+    <p>
+      {SCHOLAR} has answered thousands of questions in Q&amp;A sessions recorded over many years.
+      They are spread across hours of video, so a specific answer is hard to find. This site turns
+      each answer into its own page. You can search and browse them by topic, and each page opens
+      the video at the moment the question is asked.
+    </p>
+
+    <h2>This is an unofficial archive</h2>
+    <p>
+      It is a fan project. It is not affiliated with or endorsed by {SCHOLAR}, EPIC Masjid or
+      Memphis Islamic Center. It is not a fatwa service. For a ruling on your own situation, ask a
+      qualified scholar directly.
+    </p>
+
+    <h2>How the pages are made</h2>
+    <ul>
+      <li>The audio of each Q&amp;A video is transcribed automatically.</li>
+      <li>The transcript is split into individual questions, each with the time the question begins.</li>
+      <li>
+        Each answer is lightly edited for reading: filler words, false starts and repetition are
+        removed, and Arabic terms are spelled consistently. Nothing is added and nothing substantive
+        is removed.
+      </li>
+    </ul>
+    <p>
+      Mistakes can still slip in. The video is always the source: if the text and the video
+      differ, trust the video.
+    </p>
+
+    <h2>Sources</h2>
+    <ul>
+      {series.map((s) => (
+        <li><a href={`https://www.youtube.com/playlist?list=${s.playlist.id}`} target="_blank" rel="noopener">{s.playlist.title}</a></li>
+      ))}
+      <li><a href="https://www.youtube.com/@YasirQadhi" target="_blank" rel="noopener">Yasir Qadhi on YouTube</a></li>
+      <li><a href="https://www.youtube.com/@EPICMasjid" target="_blank" rel="noopener">EPIC Masjid on YouTube</a></li>
+      <li><a href="https://www.youtube.com/@MemphisIslamicCenter" target="_blank" rel="noopener">Memphis Islamic Center on YouTube</a></li>
+    </ul>
+  </div>
+</Base>

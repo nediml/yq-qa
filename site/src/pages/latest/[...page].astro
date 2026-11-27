@@ -1,0 +1,21 @@
+---
+import Base from '../../layouts/Base.astro';
+import QuestionList from '../../components/QuestionList.astro';
+import Pager from '../../components/Pager.astro';
+import { questions, pages } from '../../lib/data';
+
+export function getStaticPaths() {
+  const all = pages(questions);
+  return all.map((items, i) => ({
+    params: { page: i === 0 ? undefined : `page/${i + 1}` },
+    props: { items, current: i + 1, total: all.length },
+  }));
+}
+const { items, current, total } = Astro.props;
+---
+<Base title={current > 1 ? `All questions — page ${current}` : 'All questions'}>
+  <h1>All questions</h1>
+  <p class="lede">{questions.length} questions, newest sessions first.</p>
+  <QuestionList items={items} />
+  <Pager base="/latest/" current={current} total={total} />
+</Base>

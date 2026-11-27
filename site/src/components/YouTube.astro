@@ -1,0 +1,30 @@
+---
+import { mmss, ytUrl } from '../lib/data';
+
+interface Props { id: string; start: number; title: string }
+const { id, start, title } = Astro.props;
+const s = Math.floor(start);
+---
+<div class="yt" data-yt={id} data-start={s}>
+  <button type="button" aria-label={`Play “${title}” from ${mmss(s)}`}>
+    <img src={`https://i.ytimg.com/vi/${id}/hqdefault.jpg`} alt="" loading="lazy" width="480" height="360" />
+    <span class="play" aria-hidden="true"></span>
+    <span class="badge">Starts at {mmss(s)}</span>
+  </button>
+</div>
+<p class="yt-caption">
+  The video starts at <a href={ytUrl(id, s)} target="_blank" rel="noopener">{mmss(s)}</a>, where this question begins.
+</p>
+
+<script is:inline>
+  document.querySelectorAll('.yt[data-yt]').forEach((el) => {
+    el.querySelector('button')?.addEventListener('click', () => {
+      const f = document.createElement('iframe');
+      f.src = `https://www.youtube-nocookie.com/embed/${el.dataset.yt}?start=${el.dataset.start}&autoplay=1&rel=0`;
+      f.title = 'YouTube video player';
+      f.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
+      f.allowFullscreen = true;
+      el.replaceChildren(f);
+    });
+  });
+</script>

@@ -1,0 +1,42 @@
+---
+import Base from '../layouts/Base.astro';
+import Search from '../components/Search.astro';
+import QuestionList from '../components/QuestionList.astro';
+import Pager from '../components/Pager.astro';
+import { categories, questions, videos, inCategory, pages, SCHOLAR } from '../lib/data';
+
+const all = pages(questions);
+const hours = Math.round([...videos.values()].reduce((s, v) => s + (v.duration || 0), 0) / 360) / 10;
+---
+<Base>
+  <section class="hero">
+    <h1>Questions answered by {SCHOLAR}</h1>
+    <p class="lede">
+      Every answer from his Q&amp;A sessions as a readable page, with the video starting at the
+      moment the question is asked.
+    </p>
+    <div class="stats">
+      <span><b>{questions.length}</b> questions</span>
+      <span><b>{videos.size}</b> videos</span>
+      <span><b>{hours}</b> hours of Q&amp;A</span>
+    </div>
+    <Search />
+  </section>
+
+  <h2 id="topics">Topics</h2>
+  <div class="cat-grid">
+    {categories.map((c) => {
+      const n = inCategory(c.slug).length;
+      return (
+        <a class:list={['cat-card card', { empty: n === 0 }]} href={`/category/${c.slug}/`}>
+          <span class="row"><strong>{c.name}</strong><span class="count">{n}</span></span>
+          <p>{c.description}</p>
+        </a>
+      );
+    })}
+  </div>
+
+  <h2>Latest answered</h2>
+  <QuestionList items={all[0]} />
+  <Pager base="/latest/" current={1} total={all.length} />
+</Base>

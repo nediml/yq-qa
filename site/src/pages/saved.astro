@@ -1,0 +1,48 @@
+---
+import Base from '../layouts/Base.astro';
+---
+<Base title="Saved questions" section="saved">
+  <h1>Saved questions</h1>
+  <p class="lede">Saved in this browser only. Nothing leaves your device.</p>
+  <ul class="q-list" id="saved-list"></ul>
+  <p class="empty-note" id="saved-empty" hidden>
+    Nothing saved yet. Use the <b>Save</b> button on any question to keep it here.
+  </p>
+
+  <script is:inline>
+    (() => {
+      const KEY = 'yqqa.saved';
+      const list = document.getElementById('saved-list');
+      const empty = document.getElementById('saved-empty');
+      const read = () => { try { return JSON.parse(localStorage.getItem(KEY) || '[]'); } catch { return []; } };
+      const write = (v) => { try { localStorage.setItem(KEY, JSON.stringify(v)); } catch {} };
+      const render = () => {
+        const items = read();
+        empty.hidden = items.length > 0;
+        list.replaceChildren(...items.map((it) => {
+          const li = document.createElement('li');
+          li.className = 'q-item card';
+          const meta = document.createElement('div');
+          meta.className = 'meta';
+          const chip = document.createElement('span');
+          chip.className = 'chip';
+          chip.textContent = it.category;
+          const rm = document.createElement('button');
+          rm.className = 'chip plain';
+          rm.style.border = '0'; rm.style.cursor = 'pointer';
+          rm.textContent = 'Remove';
+          rm.addEventListener('click', () => { write(read().filter((x) => x.slug !== it.slug)); render(); });
+          meta.append(chip, rm);
+          const h = document.createElement('h3');
+          const a = document.createElement('a');
+          a.href = `/q/${it.slug}/`;
+          a.textContent = it.question;
+          h.append(a);
+          li.append(meta, h);
+          return li;
+        }));
+      };
+      render();
+    })();
+  </script>
+</Base>

@@ -1,0 +1,25 @@
+---
+import Base from '../../layouts/Base.astro';
+import { series, inVideo, formatDate, mmss } from '../../lib/data';
+
+export function getStaticPaths() {
+  return series.map((s) => ({ params: { id: s.playlist.id }, props: { s } }));
+}
+const { s } = Astro.props as { s: (typeof series)[number] };
+---
+<Base title={s.playlist.title} section="series">
+  <nav class="crumbs" aria-label="Breadcrumb">
+    <a href="/">Home</a><span aria-hidden="true">›</span><a href="/series/">Series</a>
+  </nav>
+  <h1>{s.playlist.title}</h1>
+  <p class="lede">{s.videos.length} {s.videos.length === 1 ? 'video' : 'videos'} · {s.count} questions ·
+    <a href={`https://www.youtube.com/playlist?list=${s.playlist.id}`} target="_blank" rel="noopener">YouTube playlist</a></p>
+  <ul class="series-list">
+    {s.videos.map((v) => (
+      <li class="card">
+        <a href={`/video/${v.id}/`}>{v.title}</a>
+        <span class="muted">{formatDate(v.uploadDate)} · {mmss(v.duration)} · {inVideo(v.id).length} questions</span>
+      </li>
+    ))}
+  </ul>
+</Base>

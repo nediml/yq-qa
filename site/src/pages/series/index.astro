@@ -1,0 +1,16 @@
+---
+import Base from '../../layouts/Base.astro';
+import { series } from '../../lib/data';
+---
+<Base title="Series" section="series">
+  <h1>Series</h1>
+  <p class="lede">The Q&amp;A programmes the answers come from.</p>
+  <ul class="series-list">
+    {series.map((s) => (
+      <li class="card">
+        <a href={`/series/${s.playlist.id}/`}>{s.playlist.title}</a>
+        <span class="muted">{s.videos.length} {s.videos.length === 1 ? 'video' : 'videos'} · {s.count} questions</span>
+      </li>
+    ))}
+  </ul>
+</Base>

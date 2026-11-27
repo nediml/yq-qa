@@ -1,0 +1,18 @@
+---
+import Base from '../../layouts/Base.astro';
+import { categories, inCategory } from '../../lib/data';
+---
+<Base title="Topics" section="topics">
+  <h1>Topics</h1>
+  <p class="lede">Every question is filed under one topic and sub-topic.</p>
+  {categories.map((c) => (
+    <section>
+      <h2><a href={`/category/${c.slug}/`} style="color:inherit">{c.name}</a> <span class="muted" style="font-weight:400">· {inCategory(c.slug).length}</span></h2>
+      <div class="sub-list">
+        {c.subs.map((s) => (
+          <a class="chip plain" href={`/category/${c.slug}/${s.slug}/`}>{s.name} · {inCategory(c.slug, s.slug).length}</a>
+        ))}
+      </div>
+    </section>
+  ))}
+</Base>

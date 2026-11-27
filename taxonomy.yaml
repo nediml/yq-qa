@@ -1,0 +1,142 @@
+# Fixed topic tree. Every question gets exactly one category + subcategory.
+# Add subcategories here (never ad hoc in question files); validate.py enforces it.
+- slug: creed
+  name: Creed & Belief
+  description: Aqeedah, Allah and His names, prophets, the unseen, divine decree
+  subs:
+    - {slug: allah, name: Allah & His Names}
+    - {slug: prophets-and-angels, name: Prophets & Angels}
+    - {slug: unseen-and-afterlife, name: The Unseen & Afterlife}
+    - {slug: divine-decree, name: Divine Decree (Qadr)}
+    - {slug: sects-and-groups, name: Sects & Groups}
+    - {slug: doubts-and-faith, name: Doubts & Faith Crises}
+
+- slug: prayer
+  name: Prayer & Purification
+  description: Wudu, ghusl, salah, Jumu'ah, Eid and voluntary prayers
+  subs:
+    - {slug: purification, name: Purification (Wudu & Ghusl)}
+    - {slug: salah, name: Salah}
+    - {slug: jumuah-and-eid, name: Jumu'ah & Eid}
+    - {slug: voluntary-prayers, name: Voluntary Prayers}
+    - {slug: mosque, name: The Mosque}
+
+- slug: fasting
+  name: Fasting & Ramadan
+  description: Rules of fasting, Ramadan, taraweeh, voluntary fasts
+  subs:
+    - {slug: rules-of-fasting, name: Rules of Fasting}
+    - {slug: ramadan, name: Ramadan & Taraweeh}
+    - {slug: voluntary-fasts, name: Voluntary Fasts}
+
+- slug: zakat-and-charity
+  name: Zakat & Charity
+  description: Zakat calculation, sadaqah, waqf
+  subs:
+    - {slug: zakat, name: Zakat}
+    - {slug: sadaqah, name: Sadaqah & Waqf}
+
+- slug: hajj-and-umrah
+  name: Hajj, Umrah & Udhiya
+  description: Pilgrimage rites and the Eid sacrifice
+  subs:
+    - {slug: hajj, name: Hajj}
+    - {slug: umrah, name: Umrah}
+    - {slug: udhiya, name: Udhiya (Sacrifice)}
+
+- slug: quran-and-dua
+  name: Qur'an & Du'a
+  description: Recitation, the mushaf, tafsir, du'a and dhikr
+  subs:
+    - {slug: quran, name: The Qur'an}
+    - {slug: dua-and-dhikr, name: Du'a & Dhikr}
+
+- slug: islamic-sciences
+  name: Hadith & Islamic Sciences
+  description: Hadith authenticity, madhhabs, fiqh methodology, scholarship
+  subs:
+    - {slug: hadith, name: Hadith}
+    - {slug: madhhabs, name: Madhhabs & Fiqh Methodology}
+    - {slug: seeking-knowledge, name: Scholars & Seeking Knowledge}
+
+- slug: marriage-and-family
+  name: Marriage & Family
+  description: Marriage, spouses, divorce, parents and relatives
+  subs:
+    - {slug: marriage, name: Marriage}
+    - {slug: spouses, name: Spousal Rights & Relations}
+    - {slug: divorce, name: Divorce}
+    - {slug: parents-and-relatives, name: Parents & Relatives}
+
+- slug: women
+  name: Women in Islam
+  description: Hijab, menstruation, women's rights and roles
+  subs:
+    - {slug: hijab-and-dress, name: Hijab & Dress}
+    - {slug: menstruation, name: Menstruation & Postpartum}
+    - {slug: rights-and-roles, name: Rights & Roles}
+
+- slug: parenting
+  name: Raising Children
+  description: Tarbiyah, education, children's questions
+  subs:
+    - {slug: raising-children, name: Raising Children}
+    - {slug: education, name: Education & Schooling}
+
+- slug: halal-and-haram
+  name: Halal & Haram
+  description: Food, entertainment, images, appearance, gender interaction
+  subs:
+    - {slug: food-and-drink, name: Food & Drink}
+    - {slug: entertainment, name: Music & Entertainment}
+    - {slug: images-and-art, name: Images & Art}
+    - {slug: appearance, name: Appearance & Adornment}
+    - {slug: gender-interaction, name: Gender Interaction}
+    - {slug: animals, name: Animals & Pets}
+
+- slug: finance
+  name: Business & Finance
+  description: Interest, loans, investing, crypto, work, insurance
+  subs:
+    - {slug: interest-and-loans, name: Interest & Loans}
+    - {slug: investing, name: Investing & Crypto}
+    - {slug: work, name: Work & Earnings}
+    - {slug: insurance, name: Insurance}
+
+- slug: health
+  name: Health & Medicine
+  description: Medical ethics, mental health, illness
+  subs:
+    - {slug: medical-ethics, name: Medical Ethics}
+    - {slug: mental-health, name: Mental Health}
+
+- slug: death
+  name: Death & Inheritance
+  description: Funerals, the deceased, wills and inheritance
+  subs:
+    - {slug: funerals, name: Funerals & the Deceased}
+    - {slug: inheritance, name: Wills & Inheritance}
+
+- slug: character
+  name: Character & Spirituality
+  description: Manners, sins and repentance, the heart
+  subs:
+    - {slug: manners, name: Manners & Speech}
+    - {slug: sins-and-repentance, name: Sins & Repentance}
+    - {slug: spirituality, name: The Heart & Spiritual Growth}
+
+- slug: society
+  name: Muslims & Society
+  description: Unity, interfaith, politics, living as a minority
+  subs:
+    - {slug: unity, name: Unity & Disagreement}
+    - {slug: interfaith, name: Interfaith & Da'wah}
+    - {slug: current-affairs, name: Politics & Current Affairs}
+    - {slug: living-in-the-west, name: Living in the West}
+
+- slug: history
+  name: Seerah & History
+  description: The Prophet's life, the Companions, Islamic history
+  subs:
+    - {slug: seerah, name: Seerah & Companions}
+    - {slug: islamic-history, name: Islamic History}
