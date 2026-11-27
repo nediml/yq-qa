@@ -1,6 +1,7 @@
 """List Q&A videos from sources.yaml and write data/videos/<id>.json.
 
   ingest.py --ids utLodVTY8YA O6Te1jA8Ztw   # only these videos
+  ingest.py --ids-file ids.txt              # one id per line (ids may start with "-")
   ingest.py --all                           # every playlist + title matches
 
 Re-runnable: existing video files are kept unless --refresh is given.
@@ -51,9 +52,14 @@ def main() -> None:
     ap = argparse.ArgumentParser()
     g = ap.add_mutually_exclusive_group(required=True)
     g.add_argument("--ids", nargs="+")
+    # One id per line. Use this for ids starting with "-", which argparse
+    # would otherwise read as flags.
+    g.add_argument("--ids-file")
     g.add_argument("--all", action="store_true")
     ap.add_argument("--refresh", action="store_true")
     args = ap.parse_args()
+    if args.ids_file:
+        args.ids = [l.strip() for l in open(args.ids_file) if l.strip()]
 
     src = load_yaml("sources.yaml")
     speaker_re = re.compile(src["speaker_match"])
