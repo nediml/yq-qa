@@ -10,7 +10,7 @@ Output: one JSON file per question in `data/questions/<videoId>-<NN>.json`
 | Mode | Rule |
 |---|---|
 | `single` | The whole clip is one question. `start` = when he starts on the question (usually 0). |
-| `chapters` | Each chapter is a candidate question. Skip intro, outro, du'a, announcements. If one chapter holds two separate questions, split it; if a chapter title is wrong, trust the transcript. |
+| `chapters` | Each chapter is a candidate question. Skip intro, outro, du'a, announcements. If one chapter holds two separate questions, split it; if a chapter title is wrong, trust the transcript. Some videos use chapters as sub-topic markers inside one long answer ("The term itself", "Where did it come from"): merge consecutive chapters that answer the same question into one. |
 | `free` | Read the transcript and find each question being read out or asked, and where his answer ends. |
 
 - `start`: the second the **question is read out** (or, if not read out, when he

@@ -31,6 +31,7 @@ def download(video_id: str):
     opts = {
         "quiet": True,
         "no_warnings": True,
+        "noprogress": True,
         "format": "bestaudio[ext=m4a]/bestaudio",
         "outtmpl": str(AUDIO / "%(id)s.%(ext)s"),
     }
