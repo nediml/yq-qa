@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import { url } from '../lib/data';
 
 interface Props { title?: string; description?: string; section?: string }
 const { title, description, section } = Astro.props;
@@ -22,7 +23,7 @@ const nav = [
     <meta name="description" content={desc} />
     <meta property="og:title" content={title ?? siteName} />
     <meta property="og:description" content={desc} />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/svg+xml" href={url("/favicon.svg")} />
     <meta name="theme-color" content="#0d6b57" />
     <script is:inline>
       (() => {
@@ -37,15 +38,15 @@ const nav = [
   <body>
     <header class="site-header">
       <div class="wrap">
-        <a class="brand" href="/">
+        <a class="brand" href={url("/")}>
           <span class="brand-mark">YQ <span>Q&amp;A</span></span>
           <span class="brand-sub">Unofficial archive of Shaykh Dr. Yasir Qadhi's answers</span>
         </a>
         <nav class="nav" aria-label="Main">
           {nav.map((n) => (
-            <a href={n.href} class={n.hideSm ? 'hide-sm' : undefined} aria-current={section === n.key ? 'page' : undefined}>{n.label}</a>
+            <a href={url(n.href)} class={n.hideSm ? 'hide-sm' : undefined} aria-current={section === n.key ? 'page' : undefined}>{n.label}</a>
           ))}
-          <a href="/search/" aria-label="Search" title="Search">
+          <a href={url("/search/")} aria-label="Search" title="Search">
             <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
           </a>
           <button class="icon-btn" id="theme-toggle" type="button" aria-label="Toggle dark mode" title="Toggle dark mode">
@@ -62,11 +63,11 @@ const nav = [
     <footer class="site-footer">
       <div class="wrap">
         <nav aria-label="Footer">
-          <a href="/">Home</a>
-          <a href="/category/">Topics</a>
-          <a href="/series/">Series</a>
-          <a href="/saved/">Saved</a>
-          <a href="/about/">About</a>
+          <a href={url("/")}>Home</a>
+          <a href={url("/category/")}>Topics</a>
+          <a href={url("/series/")}>Series</a>
+          <a href={url("/saved/")}>Saved</a>
+          <a href={url("/about/")}>About</a>
         </nav>
         <p style="margin:0">
           Unofficial fan archive. Not affiliated with Shaykh Dr. Yasir Qadhi, EPIC Masjid or Memphis Islamic Center.

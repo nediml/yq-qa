@@ -130,4 +130,9 @@ export function pages<T>(items: T[], size = PAGE_SIZE): T[][] {
   return out.length ? out : [[]];
 }
 
-export const pageUrl = (base: string, n: number) => (n <= 1 ? base : `${base}page/${n}/`);
+// Site is served under a base path on GitHub Pages (/yq-qa/). Every internal
+// link goes through url(): url('/q/x/') -> '/yq-qa/q/x/'.
+const BASE = import.meta.env.BASE_URL.replace(/\/$/, '');
+export const url = (p: string) => BASE + p;
+
+export const pageUrl = (base: string, n: number) => url(n <= 1 ? base : `${base}page/${n}/`);

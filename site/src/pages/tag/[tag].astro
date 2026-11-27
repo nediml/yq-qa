@@ -1,7 +1,7 @@
 ---
 import Base from '../../layouts/Base.astro';
 import QuestionList from '../../components/QuestionList.astro';
-import { tags } from '../../lib/data';
+import { tags, url } from '../../lib/data';
 
 export function getStaticPaths() {
   return [...tags.values()].map((t) => ({ params: { tag: t.slug }, props: { t } }));
@@ -9,7 +9,7 @@ export function getStaticPaths() {
 const { t } = Astro.props as { t: ReturnType<typeof tags.get> & {} };
 ---
 <Base title={`#${t.name}`}>
-  <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a></nav>
+  <nav class="crumbs" aria-label="Breadcrumb"><a href={url("/")}>Home</a></nav>
   <h1>#{t.name}</h1>
   <p class="lede">{t.items.length} {t.items.length === 1 ? 'question' : 'questions'} tagged “{t.name}”.</p>
   <QuestionList items={t.items} showSub />

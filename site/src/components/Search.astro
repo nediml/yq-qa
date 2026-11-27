@@ -1,12 +1,13 @@
 ---
+import { url } from '../lib/data';
 interface Props { autofocus?: boolean }
 const { autofocus = false } = Astro.props;
 ---
-<link rel="stylesheet" href="/pagefind/pagefind-ui.css" />
-<div id="search" data-autofocus={autofocus ? '1' : undefined}>
-  <noscript><p class="search-fallback">Search needs JavaScript. Browse by <a href="/category/">topic</a> instead.</p></noscript>
+<link rel="stylesheet" href={url("/pagefind/pagefind-ui.css")} />
+<div id="search" data-base={url('/')} data-autofocus={autofocus ? '1' : undefined}>
+  <noscript><p class="search-fallback">Search needs JavaScript. Browse by <a href={url("/category/")}>topic</a> instead.</p></noscript>
 </div>
-<script is:inline src="/pagefind/pagefind-ui.js"></script>
+<script is:inline src={url("/pagefind/pagefind-ui.js")}></script>
 <script is:inline>
   (() => {
     const el = document.getElementById('search');
@@ -16,6 +17,8 @@ const { autofocus = false } = Astro.props;
     }
     new PagefindUI({
       element: '#search',
+      baseUrl: el.dataset.base,
+      bundlePath: el.dataset.base + 'pagefind/',
       showImages: false,
       showSubResults: false,
       resetStyles: false,

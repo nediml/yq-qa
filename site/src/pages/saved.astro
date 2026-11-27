@@ -1,10 +1,11 @@
 ---
 import Base from '../layouts/Base.astro';
+import { url } from '../lib/data';
 ---
 <Base title="Saved questions" section="saved">
   <h1>Saved questions</h1>
   <p class="lede">Saved in this browser only. Nothing leaves your device.</p>
-  <ul class="q-list" id="saved-list"></ul>
+  <ul class="q-list" id="saved-list" data-base={url('/')}></ul>
   <p class="empty-note" id="saved-empty" hidden>
     Nothing saved yet. Use the <b>Save</b> button on any question to keep it here.
   </p>
@@ -35,7 +36,7 @@ import Base from '../layouts/Base.astro';
           meta.append(chip, rm);
           const h = document.createElement('h3');
           const a = document.createElement('a');
-          a.href = `/q/${it.slug}/`;
+          a.href = `${list.dataset.base}q/${it.slug}/`;
           a.textContent = it.question;
           h.append(a);
           li.append(meta, h);

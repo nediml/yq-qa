@@ -4,7 +4,7 @@
 import Base from '../../../layouts/Base.astro';
 import QuestionList from '../../../components/QuestionList.astro';
 import Pager from '../../../components/Pager.astro';
-import { categories, inCategory, pages, type Category, type Sub, type Question } from '../../../lib/data';
+import { categories, inCategory, pages, type Category, type Sub, type Question, url } from '../../../lib/data';
 
 export function getStaticPaths() {
   const out: { params: { cat: string; rest: string | undefined }; props: object }[] = [];
@@ -31,19 +31,19 @@ const title = s ? `${s.name} — ${c.name}` : c.name;
 ---
 <Base title={current > 1 ? `${title} — page ${current}` : title} section="topics">
   <nav class="crumbs" aria-label="Breadcrumb">
-    <a href="/">Home</a><span aria-hidden="true">›</span>
-    <a href="/category/">Topics</a>
-    {s && <><span aria-hidden="true">›</span><a href={`/category/${c.slug}/`}>{c.name}</a></>}
+    <a href={url("/")}>Home</a><span aria-hidden="true">›</span>
+    <a href={url("/category/")}>Topics</a>
+    {s && <><span aria-hidden="true">›</span><a href={url(`/category/${c.slug}/`)}>{c.name}</a></>}
   </nav>
   <h1>{s ? s.name : c.name}</h1>
   <p class="lede">{count} {count === 1 ? 'question' : 'questions'}{!s && ` · ${c.description}`}</p>
 
   <div class="sub-list">
-    <a class="chip plain" href={`/category/${c.slug}/`} aria-current={!s ? 'page' : undefined}>All · {inCategory(c.slug).length}</a>
+    <a class="chip plain" href={url(`/category/${c.slug}/`)} aria-current={!s ? 'page' : undefined}>All · {inCategory(c.slug).length}</a>
     {c.subs.map((x) => {
       const n = inCategory(c.slug, x.slug).length;
       return n > 0 || x.slug === s?.slug ? (
-        <a class="chip plain" href={`/category/${c.slug}/${x.slug}/`} aria-current={x.slug === s?.slug ? 'page' : undefined}>{x.name} · {n}</a>
+        <a class="chip plain" href={url(`/category/${c.slug}/${x.slug}/`)} aria-current={x.slug === s?.slug ? 'page' : undefined}>{x.name} · {n}</a>
       ) : null;
     })}
   </div>

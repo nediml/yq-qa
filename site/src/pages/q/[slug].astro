@@ -1,7 +1,7 @@
 ---
 import Base from '../../layouts/Base.astro';
 import YouTube from '../../components/YouTube.astro';
-import { questions, category, sub, inVideo, related, slugify, mmss, formatDate, SCHOLAR, type Question } from '../../lib/data';
+import { questions, category, sub, inVideo, related, slugify, mmss, formatDate, SCHOLAR, type Question, url } from '../../lib/data';
 
 export function getStaticPaths() {
   return questions.map((q) => ({ params: { slug: q.slug }, props: { q } }));
@@ -19,14 +19,14 @@ const savePayload = JSON.stringify({ slug: q.slug, question: q.question, categor
 <Base title={q.question} description={q.excerpt}>
   <article class="narrow" data-pagefind-body>
     <nav class="crumbs" aria-label="Breadcrumb" data-pagefind-ignore>
-      <a href="/">Home</a><span aria-hidden="true">›</span>
-      <a href={`/category/${c.slug}/`}>{c.name}</a><span aria-hidden="true">›</span>
-      <a href={`/category/${c.slug}/${s.slug}/`}>{s.name}</a>
+      <a href={url("/")}>Home</a><span aria-hidden="true">›</span>
+      <a href={url(`/category/${c.slug}/`)}>{c.name}</a><span aria-hidden="true">›</span>
+      <a href={url(`/category/${c.slug}/${s.slug}/`)}>{s.name}</a>
     </nav>
 
     <div class="q-head" data-pagefind-ignore>
-      <a class="chip" href={`/category/${c.slug}/${s.slug}/`}>{s.name}</a>
-      <a class="chip plain" href={`/video/${q.videoId}/`} title={q.video.title}>
+      <a class="chip" href={url(`/category/${c.slug}/${s.slug}/`)}>{s.name}</a>
+      <a class="chip plain" href={url(`/video/${q.videoId}/`)} title={q.video.title}>
         {q.video.playlist?.title ?? q.video.channel} · {formatDate(q.video.uploadDate)}
       </a>
     </div>
@@ -35,7 +35,7 @@ const savePayload = JSON.stringify({ slug: q.slug, question: q.question, categor
     <span hidden data-pagefind-ignore><span data-pagefind-filter="topic">{c.name}</span></span>
 
     <div class="byline" data-pagefind-ignore>
-      <span>Answered by <a href="/about/">{SCHOLAR}</a></span>
+      <span>Answered by <a href={url("/about/")}>{SCHOLAR}</a></span>
       <span class="actions">
         <button class="btn" type="button" id="share">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v7a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-7"/><path d="m16 6-4-4-4 4"/><path d="M12 2v13"/></svg>
@@ -61,13 +61,13 @@ const savePayload = JSON.stringify({ slug: q.slug, question: q.question, categor
       <YouTube id={q.videoId} start={q.start} title={q.question} />
 
       <div class="tags">
-        {q.tags.map((t) => <a class="chip plain" href={`/tag/${slugify(t)}/`}>#{t}</a>)}
+        {q.tags.map((t) => <a class="chip plain" href={url(`/tag/${slugify(t)}/`)}>#{t}</a>)}
       </div>
 
       {(prev || next) && (
         <nav class="prevnext" aria-label="More from this video">
-          {prev && <a class="card" href={`/q/${prev.slug}/`} rel="prev"><small>‹ Previous in this session · {mmss(prev.start)}</small>{prev.question}</a>}
-          {next && <a class="card next" href={`/q/${next.slug}/`} rel="next"><small>Next in this session · {mmss(next.start)} ›</small>{next.question}</a>}
+          {prev && <a class="card" href={url(`/q/${prev.slug}/`)} rel="prev"><small>‹ Previous in this session · {mmss(prev.start)}</small>{prev.question}</a>}
+          {next && <a class="card next" href={url(`/q/${next.slug}/`)} rel="next"><small>Next in this session · {mmss(next.start)} ›</small>{next.question}</a>}
         </nav>
       )}
 
@@ -81,7 +81,7 @@ const savePayload = JSON.stringify({ slug: q.slug, question: q.question, categor
                   <span class="chip">{sub(r.category, r.subcategory).name}</span>
                   <span class="chip plain">▶ {mmss(r.start)}</span>
                 </div>
-                <h3><a href={`/q/${r.slug}/`}>{r.question}</a></h3>
+                <h3><a href={url(`/q/${r.slug}/`)}>{r.question}</a></h3>
               </li>
             ))}
           </ul>

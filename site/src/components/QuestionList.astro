@@ -1,5 +1,5 @@
 ---
-import { category, sub, mmss, type Question } from '../lib/data';
+import { category, sub, mmss, type Question, url } from '../lib/data';
 
 interface Props { items: Question[]; showSub?: boolean }
 const { items, showSub = false } = Astro.props;
@@ -11,12 +11,12 @@ const { items, showSub = false } = Astro.props;
     {items.map((q) => (
       <li class="q-item card">
         <div class="meta">
-          <a class="chip" href={`/category/${q.category}/${showSub ? q.subcategory + '/' : ''}`}>
+          <a class="chip" href={url(`/category/${q.category}/${showSub ? q.subcategory + '/' : ''}`)}>
             {showSub ? sub(q.category, q.subcategory).name : category(q.category).name}
           </a>
-          <a class="chip plain" href={`/video/${q.videoId}/`} title={q.video.title}>▶ {mmss(q.start)}</a>
+          <a class="chip plain" href={url(`/video/${q.videoId}/`)} title={q.video.title}>▶ {mmss(q.start)}</a>
         </div>
-        <h3><a href={`/q/${q.slug}/`}>{q.question}</a></h3>
+        <h3><a href={url(`/q/${q.slug}/`)}>{q.question}</a></h3>
         <p>{q.excerpt}</p>
       </li>
     ))}

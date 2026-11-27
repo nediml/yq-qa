@@ -3,7 +3,7 @@ import Base from '../layouts/Base.astro';
 import Search from '../components/Search.astro';
 import QuestionList from '../components/QuestionList.astro';
 import Pager from '../components/Pager.astro';
-import { categories, questions, videos, inCategory, pages, SCHOLAR } from '../lib/data';
+import { categories, questions, videos, inCategory, pages, SCHOLAR, url } from '../lib/data';
 
 const all = pages(questions);
 const hours = Math.round([...videos.values()].reduce((s, v) => s + (v.duration || 0), 0) / 360) / 10;
@@ -28,7 +28,7 @@ const hours = Math.round([...videos.values()].reduce((s, v) => s + (v.duration |
     {categories.map((c) => {
       const n = inCategory(c.slug).length;
       return (
-        <a class:list={['cat-card card', { empty: n === 0 }]} href={`/category/${c.slug}/`}>
+        <a class:list={['cat-card card', { empty: n === 0 }]} href={url(`/category/${c.slug}/`)}>
           <span class="row"><strong>{c.name}</strong><span class="count">{n}</span></span>
           <p>{c.description}</p>
         </a>

@@ -1,6 +1,6 @@
 ---
 import Base from '../../layouts/Base.astro';
-import { videos, inVideo, sub, mmss, formatDate, ytUrl, type Video } from '../../lib/data';
+import { videos, inVideo, sub, mmss, formatDate, ytUrl, type Video, url } from '../../lib/data';
 
 export function getStaticPaths() {
   return [...videos.values()].map((v) => ({ params: { id: v.id }, props: { v } }));
@@ -10,9 +10,9 @@ const qs = inVideo(v.id);
 ---
 <Base title={v.title} section="series">
   <nav class="crumbs" aria-label="Breadcrumb">
-    <a href="/">Home</a><span aria-hidden="true">›</span>
-    <a href="/series/">Series</a>
-    {v.playlist && <><span aria-hidden="true">›</span><a href={`/series/${v.playlist.id}/`}>{v.playlist.title}</a></>}
+    <a href={url("/")}>Home</a><span aria-hidden="true">›</span>
+    <a href={url("/series/")}>Series</a>
+    {v.playlist && <><span aria-hidden="true">›</span><a href={url(`/series/${v.playlist.id}/`)}>{v.playlist.title}</a></>}
   </nav>
   <div class="v-head">
     <h1>{v.title}</h1>
@@ -29,7 +29,7 @@ const qs = inVideo(v.id);
         <li class="card">
           <a class="ts" href={ytUrl(v.id, q.start)} target="_blank" rel="noopener" title="Open on YouTube at this moment">▶ {mmss(q.start)}</a>
           <div>
-            <a class="q" href={`/q/${q.slug}/`}>{q.question}</a>
+            <a class="q" href={url(`/q/${q.slug}/`)}>{q.question}</a>
             <div class="muted" style="font-size:0.85rem">{sub(q.category, q.subcategory).name}</div>
           </div>
         </li>

@@ -1,7 +1,8 @@
 ---
 import Base from '../layouts/Base.astro';
+import { url } from '../lib/data';
 ---
 <Base title="Not found">
   <h1>Page not found</h1>
-  <p class="lede">That question may have moved. Try <a href="/search/">searching</a> or browse <a href="/category/">topics</a>.</p>
+  <p class="lede">That question may have moved. Try <a href={url("/search/")}>searching</a> or browse <a href={url("/category/")}>topics</a>.</p>
 </Base>

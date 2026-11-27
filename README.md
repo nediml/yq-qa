@@ -31,5 +31,7 @@ Astro static site plus Pagefind search, in `site/`.
 ```bash
 cd site && npm install
 npm run build      # astro build + pagefind index
-npm run preview    # http://localhost:4321
+npm run preview    # http://localhost:4321/yq-qa/
 ```
+
+Live at https://nediml.github.io/yq-qa/. Every push to `main` deploys it via `.github/workflows/deploy.yml`. The site is served under the `/yq-qa` base path, so internal links must go through `url()` in `site/src/lib/data.ts`.
