@@ -81,3 +81,8 @@ Don't:
 - Include the question reader's preamble, salams, or crowd noise.
 
 If a passage is inaudible or garbled, keep what's clear; never guess the meaning.
+Fix a garbled word only when the phonetics make it near-certain ("Ibn Asharism" → "Ithna 'Asharism").
+
+Citations (surah names, hadith collections, dates, names) stay exactly as he
+says them, **even when you believe they are wrong**. Never drop or correct
+them; flag them in your report instead. The page says the video is the source.
