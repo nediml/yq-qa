@@ -25,19 +25,27 @@ PROMPT = (
 
 def download(video_id: str):
     AUDIO.mkdir(parents=True, exist_ok=True)
-    existing = list(AUDIO.glob(f"{video_id}.*"))
+    # Ignore yt-dlp's partial downloads (.part / .ytdl). They are not usable audio.
+    existing = [p for p in AUDIO.glob(f"{video_id}.*") if p.suffix not in (".part", ".ytdl")]
     if existing:
         return existing[0]
     opts = {
         "quiet": True,
         "no_warnings": True,
         "noprogress": True,
+        # YouTube read timeouts happen. Retry and resume the .part file.
+        "retries": 10,
+        "fragment_retries": 10,
+        "socket_timeout": 30,
         "format": "bestaudio[ext=m4a]/bestaudio",
         "outtmpl": str(AUDIO / "%(id)s.%(ext)s"),
     }
     with yt_dlp.YoutubeDL(opts) as ydl:
         ydl.download([f"https://www.youtube.com/watch?v={video_id}"])
-    return next(AUDIO.glob(f"{video_id}.*"))
+    done = [p for p in AUDIO.glob(f"{video_id}.*") if p.suffix not in (".part", ".ytdl")]
+    if not done:
+        raise yt_dlp.utils.DownloadError(f"{video_id}: no complete audio file after download")
+    return done[0]
 
 
 def transcribe(video_id: str) -> None:
@@ -64,8 +72,16 @@ def transcribe(video_id: str) -> None:
 
 def main() -> None:
     ids = sys.argv[1:] or [v["id"] for v in videos()]
+    failed = []
     for vid in ids:
-        transcribe(vid)
+        try:
+            transcribe(vid)
+        except yt_dlp.utils.DownloadError as e:
+            print(f"{vid}: download failed ({e})", file=sys.stderr)
+            failed.append(vid)
+    if failed:
+        print(f"FAILED: {' '.join(failed)}", file=sys.stderr)
+        sys.exit(1)
 
 
 if __name__ == "__main__":

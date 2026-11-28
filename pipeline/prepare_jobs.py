@@ -21,6 +21,14 @@ def mode(v: dict) -> str:
     return "free"
 
 
+MIN_COVERAGE = 0.9  # transcript must reach 90% of the video's duration
+
+
+def coverage(v: dict) -> float:
+    segs = read_json(TRANSCRIPTS / f"{v['id']}.json")["segments"]
+    return (segs[-1]["end"] / v["duration"]) if segs and v.get("duration") else 0.0
+
+
 def build(v: dict) -> str:
     t = read_json(TRANSCRIPTS / f"{v['id']}.json")
     m = mode(v)
@@ -52,6 +60,10 @@ def main() -> None:
         if ids and v["id"] not in ids:
             continue
         if stage(v["id"]) not in ("transcribed", "prepared"):
+            continue
+        if (c := coverage(v)) < MIN_COVERAGE:
+            # Truncated transcript (e.g. from a partial download). Delete it and re-run transcribe.py.
+            print(f"{v['id']}: SKIP, transcript covers only {c:.0%} of the video", file=sys.stderr)
             continue
         (JOBS / f"{v['id']}.md").write_text(build(v))
         print(f"{v['id']}: mode={mode(v)}")
