@@ -65,7 +65,9 @@ Do:
   different translation.
 - Arabic-script recitation in the transcript: drop it when he follows with his
   own English rendering (keep that). If he gives no English, keep the Arabic as a
-  `>` blockquote. Short phrases he uses in speech (inshallah, alhamdulillah,
+  `>` blockquote, but only if you can identify the exact verse or hadith and write
+  its correct text. Never "reconstruct" a garbled fragment into something that
+  reads like scripture; drop it instead. Short phrases he uses in speech (inshallah, alhamdulillah,
   subhanAllah) stay, transliterated.
 - The first transcript lines can contain words leaked from the Whisper prompt
   (e.g. "Shafi'i and Hanbali madhhab." at 0s with no context). Ignore them.
